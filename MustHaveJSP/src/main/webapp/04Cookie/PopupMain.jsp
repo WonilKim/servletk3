@@ -36,6 +36,8 @@ $(function() {
     $('#closeBtn').click(function() {
         $('#popup').hide();
         var chkVal = $("input:checkbox[id=inactiveToday]:checked").val();
+        console.log("chkVal = " + chkVal);
+        
         $.ajax({
             url : './PopupCookie.jsp',
             type : 'get',
