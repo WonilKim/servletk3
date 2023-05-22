@@ -12,41 +12,44 @@ import java.sql.Types;
 import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspWriter;
 
-public class JDBCConnect {
+public class JDBCConnect2 {
 	private String driver = "com.mysql.cj.jdbc.Driver";
 	private String url = "jdbc:mysql://localhost:3306/musthave";
 	private String id = "musthave";
 	private String pwd = "tiger"; 
 
-	private Connection con;
-    private Statement stmt;  
-    private PreparedStatement psmt;  
-    private ResultSet rs;
+    public Connection con;
+    public Statement stmt;  
+    public PreparedStatement psmt;  
+    public ResultSet rs;
 
     // 기본 생성자
-    public JDBCConnect() {
+    public JDBCConnect2() {
         System.out.println("기본 생성자");
+        connectDB();
     }
 
     // 두 번째 생성자
-    public JDBCConnect(String driver, String url, String id, String pwd) {
+    public JDBCConnect2(String driver, String url, String id, String pwd) {
         System.out.println("인수 생성자 1");
     	this.driver = driver;
     	this.url = url;
     	this.id = id;
     	this.pwd = pwd;
-
+    	
+        connectDB();
     }
     
 
     // 세 번째 생성자
-    public JDBCConnect(ServletContext application) {
+    public JDBCConnect2(ServletContext application) {
         System.out.println("인수 생성자 2"); 
         String driver = application.getInitParameter("MysqlDriver"); 
         String url = application.getInitParameter("MysqlURL"); 
         String id = application.getInitParameter("MysqlId");
         String pwd = application.getInitParameter("MysqlPwd");
 
+        connectDB();
     }
 
     public Connection getConnection() {
@@ -77,6 +80,37 @@ public class JDBCConnect {
         }
     }
     
+
+    public boolean connectDB() {
+		try {
+            // JDBC 드라이버 로드
+            Class.forName(driver);
+            // DB에 연결
+            con = DriverManager.getConnection(url, id, pwd); 
+			
+			System.out.println("데이터베이스가 연결되었습니다.");
+			return true;
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		} 
+		return false;
+	}
+
+    // 연결 해제(자원 반납)
+    public void close() { 
+        try {            
+            if (rs != null) rs.close(); 
+            if (stmt != null) stmt.close();
+            if (psmt != null) psmt.close();
+            if (con != null) con.close(); 
+
+            System.out.println("JDBC 자원 해제");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     public ResultSet executeSelectQuery(String query) {
 
@@ -275,11 +309,9 @@ public class JDBCConnect {
 	}
 
     public static void main(String[] args) {
-    	JDBCConnect conn = new JDBCConnect();
+    	JDBCConnect2 conn2 = new JDBCConnect2();
     	
-    	Connection con = conn.getConnection();
+    	conn2.close();
     	
-    	conn.closeConnection(con);
-    	    	
 	}
 }
