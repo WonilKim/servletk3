@@ -18,10 +18,10 @@ public class JDBCConnect {
 	private String id = "musthave";
 	private String pwd = "tiger"; 
 
-	private Connection con;
-    private Statement stmt;  
-    private PreparedStatement psmt;  
-    private ResultSet rs;
+	protected Connection con;
+	protected Statement stmt;  
+	protected PreparedStatement psmt;  
+	protected ResultSet rs;
 
     // 기본 생성자
     public JDBCConnect() {

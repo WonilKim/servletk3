@@ -11,7 +11,7 @@ create table member (
 
 create table board (
 	num int not null auto_increment,
-	title varchar(200) not null,
+	title varchar(200) not null,regidate
     content varchar(2000) not null,
     id varchar(10) not null,
     postdate timestamp default current_timestamp not null,
@@ -34,3 +34,11 @@ Insert into board (title,content,id) values ("제목11입니다.", "내용11입�
 Insert into board (title,content,id) values ("제목21입니다.", "내용21입니다.","dohave");
 Insert into board (title,content,id) values ("제목22입니다.", "내용22입니다.","dohave");
 
+insert into board (title,content,id) 
+	values ('지금은 봄입니다', '봄의왈츠', 'musthave');
+insert into board (title,content,id) 
+	values ('지금은 여름입니다', '여름향기', 'musthave');
+insert into board (title,content,id) 
+	values ('지금은 가을입니다', '가을동화', 'musthave');
+insert into board (title,content,id) 
+	values ('지금은 겨울입니다', '겨울연가', 'musthave');		
