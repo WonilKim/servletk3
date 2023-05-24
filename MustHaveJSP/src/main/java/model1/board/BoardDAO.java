@@ -28,6 +28,7 @@ public class BoardDAO extends JDBCConnect {
             rs = stmt.executeQuery(query);  // 쿼리 실행
             rs.next();  // 커서를 첫 번째 행으로 이동
             totalCount = rs.getInt(1);  // 첫 번째 칼럼 값을 가져옴
+            System.out.println("totalCount = " + totalCount);
         }
         catch (Exception e) {
             System.out.println("게시물 수를 구하는 중 예외 발생");
@@ -93,11 +94,18 @@ public class BoardDAO extends JDBCConnect {
                + "     ) Tb "
                + " ) "
                + " WHERE rNum BETWEEN ? AND ?"; 
+        
+        //
+        query = "";
+        query = "select * from board limit ?, ?";
 
         try {
+        	System.out.println("query = " + query);
             // 쿼리문 완성 
             psmt = con.prepareStatement(query);
+            System.out.println("map.get(\"start\").toString() = " + map.get("start").toString());
             psmt.setString(1, map.get("start").toString());
+            System.out.println("map.get(\"end\").toString() = " + map.get("start").toString());
             psmt.setString(2, map.get("end").toString());
             
             // 쿼리문 실행 

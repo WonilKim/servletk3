@@ -49,7 +49,7 @@ public class JDBCConnect {
 
     }
 
-    public Connection getConnection() {
+	public Connection getConnection() {
 		try {
             // JDBC 드라이버 로드
             Class.forName(driver);
