@@ -9,7 +9,8 @@ import common.JDBCConnect;
 
 public class BoardDAO extends JDBCConnect {
     public BoardDAO(ServletContext application) {
-        super(application);
+        // super(application);
+    	super();
     }
 
     // 검색 조건에 맞는 게시물의 개수를 반환합니다.
@@ -79,35 +80,31 @@ public class BoardDAO extends JDBCConnect {
     public List<BoardDTO> selectListPage(Map<String, Object> map) {
         List<BoardDTO> bbs = new Vector<BoardDTO>();  // 결과(게시물 목록)를 담을 변수
         
-        // 쿼리문 템플릿  
-        String query = " SELECT * FROM ( "
-                     + "    SELECT Tb.*, ROWNUM rNum FROM ( "
-                     + "        SELECT * FROM board ";
-
-        // 검색 조건 추가 
-        if (map.get("searchWord") != null) {
-            query += " WHERE " + map.get("searchField")
-                   + " LIKE '%" + map.get("searchWord") + "%' ";
-        }
+		/*
+		 * // 쿼리문 템플릿 String query = " SELECT * FROM ( " +
+		 * "    SELECT Tb.*, ROWNUM rNum FROM ( " + "        SELECT * FROM board ";
+		 * 
+		 * // 검색 조건 추가 if (map.get("searchWord") != null) { query += " WHERE " +
+		 * map.get("searchField") + " LIKE '%" + map.get("searchWord") + "%' "; }
+		 * 
+		 * query += "      ORDER BY num DESC " + "     ) Tb " + " ) " +
+		 * " WHERE rNum BETWEEN ? AND ?";
+		 * 
+		 * // query = "";
+		 */        
         
-        query += "      ORDER BY num DESC "
-               + "     ) Tb "
-               + " ) "
-               + " WHERE rNum BETWEEN ? AND ?"; 
-        
-        //
-        query = "";
-        query = "select * from board limit ?, ?";
+        String query = "select * from board limit ?, ?";
 
         try {
         	System.out.println("query = " + query);
             // 쿼리문 완성 
             psmt = con.prepareStatement(query);
-            System.out.println("map.get(\"start\").toString() = " + map.get("start").toString());
-            psmt.setString(1, map.get("start").toString());
-            System.out.println("map.get(\"end\").toString() = " + map.get("start").toString());
-            psmt.setString(2, map.get("end").toString());
-            
+            psmt.setInt(1, (int)map.get("start"));
+            psmt.setInt(2, (int)map.get("end"));
+
+            System.out.println("start = " + map.get("start").toString());
+            System.out.println("end = " + map.get("end").toString());
+
             // 쿼리문 실행 
             rs = psmt.executeQuery();
             

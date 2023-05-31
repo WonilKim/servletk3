@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import common.JDBCConnect;
 import common.JDBCConnect2;
 
-public class MemberDAO extends JDBCConnect2 {
+public class MemberDAO extends JDBCConnect {
 
 	public MemberDAO() {
 		super();

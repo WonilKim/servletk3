@@ -30,21 +30,24 @@ int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK")
 int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수
 
 System.out.println("pageSize = " + pageSize);
-System.out.println("blockPage = " + pageSize);
-System.out.println("totalPage = " + pageSize);
+System.out.println("blockPage = " + blockPage);
+System.out.println("totalPage = " + totalPage);
 
 // 현재 페이지 확인
 int pageNum = 1; // 기본값
 String pageTemp = request.getParameter("pageNum");
 if (pageTemp != null && !pageTemp.equals(""))
 	pageNum = Integer.parseInt(pageTemp); // 요청받은 페이지로 수정
+System.out.println("pageNum = " + pageNum);
 
 // 목록에 출력할 게시물 범위 계산
-/* int start = (pageNum - 1) * pageSize + 1; // 첫 게시물 번호
-int end = pageNum * pageSize; // 마지막 게시물 번호
- */
- int start = (pageNum - 1) * pageSize + 1; // 첫 게시물 번호
-int end = pageNum * pageSize; // 마지막 게시물 번호
+// int start = (pageNum - 1) * pageSize + 1; // 첫 게시물 번호
+// int end = pageNum * pageSize; // 마지막 게시물 번호
+
+int start = (pageNum - 1) * pageSize; // 첫 게시물 번호
+int end = pageSize; // 마지막 게시물 번호
+System.out.println("start = " + start);
+System.out.println("end = " + end);
 param.put("start", start);
 param.put("end", end);
 /*** 페이지 처리 end ***/
