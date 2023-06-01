@@ -100,10 +100,11 @@
 	<%
 	// DB에 연결
 	JDBCConnect jdbc = new JDBCConnect();
+	Connection con = jdbc.getConnection();
 
 	// 쿼리문 생성   
 	String sql = "SELECT * FROM member";
-	Statement stmt = jdbc.con.createStatement();
+	Statement stmt = con.createStatement();
 
 	// 쿼리 수행
 	ResultSet rs = stmt.executeQuery(sql);
@@ -115,7 +116,7 @@
 
 	// 쿼리문 생성   
 	String sql2 = "SELECT * FROM board";
-	Statement stmt2 = jdbc.con.createStatement();
+	Statement stmt2 = con.createStatement();
 
 	// 쿼리 수행
 	ResultSet rs2 = stmt.executeQuery(sql2);
@@ -124,7 +125,7 @@
 	showResultSetTable(out, rs2);
 
 	// 연결 닫기
-	jdbc.close();
+	jdbc.closeConnection(con);
 	%>
 </body>
 </html>
