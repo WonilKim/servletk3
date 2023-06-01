@@ -10,7 +10,9 @@ import fileupload.FileUtil;
 
 @WebServlet("/mvcboard/download.do")
 public class DownloadController extends HttpServlet{
-    @Override
+    private static final long serialVersionUID = 1L;
+
+	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
         // 매개변수 받기

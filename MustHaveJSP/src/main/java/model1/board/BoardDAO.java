@@ -93,7 +93,11 @@ public class BoardDAO extends JDBCConnect {
 		 * // query = "";
 		 */        
         
-        String query = "select * from board limit ?, ?";
+        String query = "select * from board";
+        if (map.get("searchWord") != null) { 
+        	query += " WHERE " + map.get("searchField") + " LIKE '%" + map.get("searchWord") + "%' ";
+        }
+        query += " ORDER BY num DESC limit ?, ?";
 
         try {
         	System.out.println("query = " + query);

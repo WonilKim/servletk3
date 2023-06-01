@@ -77,6 +77,18 @@ public class JDBCConnect {
         }
     }
     
+    // 연결 해제(자원 반납)
+    public void close() { 
+        try {            
+            if (con != null) con.close(); 
+
+            System.out.println("JDBC 자원 해제");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     
     public ResultSet executeSelectQuery(String query) {
 

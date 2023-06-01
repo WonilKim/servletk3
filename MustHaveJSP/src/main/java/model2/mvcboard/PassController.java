@@ -14,7 +14,9 @@ import utils.JSFunction;
 
 @WebServlet("/mvcboard/pass.do")
 public class PassController extends HttpServlet {
-    @Override
+    private static final long serialVersionUID = 1L;
+
+	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
         req.setAttribute("mode", req.getParameter("mode"));

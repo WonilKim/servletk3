@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import common.DBConnPool;
+import common.JDBCConnect;
 
-public class MVCBoardDAO extends DBConnPool {
+public class MVCBoardDAO extends JDBCConnect {
     public MVCBoardDAO() {
         super();
+        
+        this.con = getConnection();
     }
 
     // 검색 조건에 맞는 게시물의 개수를 반환합니다.
@@ -35,26 +38,28 @@ public class MVCBoardDAO extends DBConnPool {
     // 검색 조건에 맞는 게시물 목록을 반환합니다(페이징 기능 지원).
     public List<MVCBoardDTO> selectListPage(Map<String,Object> map) {
         List<MVCBoardDTO> board = new Vector<MVCBoardDTO>();
-        String query = " "
-                     + "SELECT * FROM ( "
-                     + "    SELECT Tb.*, ROWNUM rNum FROM ( "
-                     + "        SELECT * FROM mvcboard ";
-
-        if (map.get("searchWord") != null)
-        {
-            query += " WHERE " + map.get("searchField")
-                   + " LIKE '%" + map.get("searchWord") + "%' ";
+        
+		/*
+		 * String query = " " + "SELECT * FROM ( " +
+		 * "    SELECT Tb.*, ROWNUM rNum FROM ( " + "        SELECT * FROM mvcboard ";
+		 * 
+		 * if (map.get("searchWord") != null) { query += " WHERE " +
+		 * map.get("searchField") + " LIKE '%" + map.get("searchWord") + "%' "; }
+		 * 
+		 * query += "        ORDER BY idx DESC " + "    ) Tb " + " ) " +
+		 * " WHERE rNum BETWEEN ? AND ?";
+		 */
+        
+        String query = "select * from mvcboard";
+        if (map.get("searchWord") != null) { 
+        	query += " WHERE " + map.get("searchField") + " LIKE '%" + map.get("searchWord") + "%' ";
         }
-
-        query += "        ORDER BY idx DESC "
-               + "    ) Tb "
-               + " ) "
-               + " WHERE rNum BETWEEN ? AND ?";
+        query += " ORDER BY idx DESC limit ?, ?";
 
         try {
             psmt = con.prepareStatement(query);
-            psmt.setString(1, map.get("start").toString());
-            psmt.setString(2, map.get("end").toString());
+            psmt.setInt(1, Integer.parseInt(map.get("start").toString()));
+            psmt.setInt(2, Integer.parseInt(map.get("end").toString()));
             rs = psmt.executeQuery();
 
             while (rs.next()) {
@@ -86,9 +91,9 @@ public class MVCBoardDAO extends DBConnPool {
         int result = 0;
         try {
             String query = "INSERT INTO mvcboard ( "
-                         + " idx, name, title, content, ofile, sfile, pass) "
+                         + " name, title, content, ofile, sfile, pass) "
                          + " VALUES ( "
-                         + " seq_board_num.NEXTVAL,?,?,?,?,?,?)";
+                         + " ?,?,?,?,?,?)";
             psmt = con.prepareStatement(query);
             psmt.setString(1, dto.getName());
             psmt.setString(2, dto.getTitle());
@@ -142,7 +147,9 @@ public class MVCBoardDAO extends DBConnPool {
         try {
             psmt = con.prepareStatement(query);
             psmt.setString(1, idx);
-            psmt.executeQuery();
+            int count = psmt.executeUpdate();
+            
+            System.out.println(count + "개 데이터 업데이트");
         }
         catch (Exception e) {
             System.out.println("게시물 조회수 증가 중 예외 발생");
@@ -158,7 +165,9 @@ public class MVCBoardDAO extends DBConnPool {
         try {
             psmt = con.prepareStatement(sql);
             psmt.setString(1, idx);
-            psmt.executeUpdate();
+            int count = psmt.executeUpdate();
+
+            System.out.println(count + "개 데이터 업데이트");
         }
         catch (Exception e) {}
     }

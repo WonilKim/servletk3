@@ -20,7 +20,9 @@ import utils.JSFunction;
 
 @WebServlet("/mvcboard/edit.do")
 public class EditController extends HttpServlet {
-    @Override
+    private static final long serialVersionUID = 1L;
+
+	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String idx = req.getParameter("idx");
